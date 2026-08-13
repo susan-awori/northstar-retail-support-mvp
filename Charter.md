@@ -13,3 +13,8 @@
 | Fionna Sibora | QA / Go-live Note Owner |Fionna-NS|
  
 *Lead's job: unblock people, own the board, enforce naming conventions, escalate per the rules below — not to do everyone's tasks.*
+
+### 2. Communication rules
+- Primary channel: **WhatsApp Group** — checked daily.
+- Daily 50-min google meet live check-in: what I did yesterday, what I'm doing today, what's blocking me.
+- Response time expectation: within 4 hours during working hours.
