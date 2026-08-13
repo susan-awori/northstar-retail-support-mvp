@@ -18,3 +18,11 @@
 - Primary channel: **WhatsApp Group** — checked daily.
 - Daily 50-min google meet live check-in: what I did yesterday, what I'm doing today, what's blocking me.
 - Response time expectation: within 4 hours during working hours.
+
+### 3. Deadlines
+- Day 1 (AM): solo baseline diagnostic — individual, no collaboration.
+- Day 1 (PM): Charter + Board workshop complete by end of day.
+- Day 2–3: build phase, board updated same-day as work happens.
+- Day 4: mid-sprint audit checkpoint — everyone reviews the commit/board log together.
+- Day 5: package + submit; Peer Reliability Index submitted individually and confidentially.
+
