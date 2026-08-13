@@ -26,3 +26,13 @@
 - Day 4: mid-sprint audit checkpoint — everyone reviews the commit/board log together.
 - Day 5: package + submit; Peer Reliability Index submitted individually and confidentially.
 
+### 4. Conflict resolution
+1. Raise it directly with the person first.
+2. If unresolved in 24 hrs, raise it in the group channel for the whole pod.
+3. If still unresolved, lead documents it and flags per the escalation path below.
+
+### 5. Escalation path (non-negotiable)
+- **Zero visible activity (commits/board movement) for 2+ days** → lead messages the person directly within that day, not at the deadline.
+- No response within 24 hrs of that message → lead documents it in the audit log and raises with the group.
+- Tasks over 4 hours are automatically split — the "black box" rule below is enforced at board-setup time, not after the fact.
+
