@@ -48,3 +48,57 @@ let metricsState = {
   escalatedToHuman: 0,     // Escalated tickets (Damaged goods, agent requests, low-confidence queries)
   softDeflections: 0       // Partial deflections (Stock "Notify Me" requests)
 };
+
+/**
+ * Loads deflection metrics from browser localStorage or initializes default zeroes.
+ */
+function loadMetrics() {
+  const saved = localStorage.getItem(METRICS_STORAGE_KEY);
+  if (saved) {
+    try {
+      metricsState = JSON.parse(saved);
+    } catch (e) {
+      console.warn('Failed to parse stored metrics, resetting to defaults.');
+    }
+  }
+  updateMetricsUI();
+}
+
+/**
+ * Saves metrics to localStorage and refreshes the on-screen dashboard.
+ */
+function saveMetrics() {
+  localStorage.setItem(METRICS_STORAGE_KEY, JSON.stringify(metricsState));
+  updateMetricsUI();
+}
+
+/**
+ * Updates the Deflection Widget UI counters in real time.
+ */
+function updateMetricsUI() {
+  const resolvedElem = document.getElementById('metric-resolved');
+  const escalatedElem = document.getElementById('metric-escalated');
+  const softElem = document.getElementById('metric-soft');
+  const rateElem = document.getElementById('metric-rate');
+
+  if (resolvedElem) resolvedElem.textContent = metricsState.resolvedWithoutHuman;
+  if (escalatedElem) escalatedElem.textContent = metricsState.escalatedToHuman;
+  if (softElem) softElem.textContent = metricsState.softDeflections;
+
+  // Calculate Deflection Percentage Rate
+  const totalQueries = metricsState.resolvedWithoutHuman + metricsState.escalatedToHuman;
+  const ratePercent = totalQueries > 0 
+    ? Math.round((metricsState.resolvedWithoutHuman / totalQueries) * 100) 
+    : 100;
+    
+  if (rateElem) rateElem.textContent = `${ratePercent}% Deflection Rate`;
+}
+
+/**
+ * Resets deflection counters (Useful for demo restarts).
+ */
+function resetMetrics() {
+  metricsState = { resolvedWithoutHuman: 0, escalatedToHuman: 0, softDeflections: 0 };
+  saveMetrics();
+  appendChatMessage('system', 'Deflection counters have been reset to zero for demo testing.');
+}
