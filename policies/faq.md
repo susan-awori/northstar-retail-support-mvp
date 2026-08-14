@@ -7,3 +7,12 @@ Because orders move quickly to our packing team, shipping addresses can only be 
 
 ### Can I combine two separate orders into one package?
 Currently, our automated warehouse system processes each order number independently to ensure speed and tracking accuracy. As a result, we cannot combine separate orders into a single shipment.
+
+### Can I cancel my order before it ships?
+Orders can be canceled within 1 hour of placement through your customer account portal or by contacting support immediately. After 1 hour, your order enters processing and must be returned after delivery.
+
+### Do you ship internationally?
+Yes! Northstar Retail Co. ships to over 40 countries globally via DHL Express and FedEx. Delivery times range between 7–12 business days depending on local customs processing.
+
+### What payment methods do you accept?
+We accept Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay, and regional mobile money options like M-PESA.
