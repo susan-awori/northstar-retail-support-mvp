@@ -554,3 +554,237 @@ function processChatMessageIntents(input) {
     if (result.success) attachFeedbackBanner('order-lookup');
     return;
   }
+
+    // --------------------------------------------------------------------------
+  // INTENT 2: Return Eligibility & Instructions
+  // --------------------------------------------------------------------------
+  if (lower.includes('return') || lower.includes('exchange') || lower.includes('send back') || lower.includes('too small') || lower.includes('wrong size')) {
+    const result = processReturnEligibility('#NS-XXXXXX', '08/01/2026');
+    appendChatMessage('bot', result.message);
+    attachFeedbackBanner('returns-lookup');
+    return;
+  }
+
+  // --------------------------------------------------------------------------
+  // INTENT 3: Refund Tracking Intent
+  // --------------------------------------------------------------------------
+  const retRegex = /#?RET-\d{4}/i;
+  const retMatch = input.match(retRegex);
+
+  if (retMatch || lower.includes('refund status') || lower.includes('where is my refund') || lower.includes('track refund')) {
+    const query = retMatch ? retMatch[0] : (currentCustomer ? currentCustomer.email : '#RET-1001');
+    const result = trackRefund(query);
+    appendChatMessage('bot', result.message);
+    attachFeedbackBanner('refund-lookup');
+    return;
+  }
+
+  // --------------------------------------------------------------------------
+  // INTENT 4: Stock / Inventory Intent
+  // --------------------------------------------------------------------------
+  if (lower.includes('stock') || lower.includes('inventory') || lower.includes('available in size') || lower.includes('sku-')) {
+    const skuMatch = input.match(/SKU-[A-Z0-9-]+/i);
+    const sku = skuMatch ? skuMatch[0] : 'SKU-JKT-001';
+    const result = checkStock(sku, 'M');
+    appendChatMessage('bot', result.message);
+    attachFeedbackBanner('stock-lookup');
+    return;
+  }
+
+  // --------------------------------------------------------------------------
+  // INTENT 5: Policy RAG Search (Free-Text Policy & FAQ Questions)
+  // --------------------------------------------------------------------------
+  const ragResult = window.policyRAG.retrieve(input, 2);
+
+  if (ragResult.found && ragResult.chunks.length > 0) {
+    const topChunk = ragResult.chunks[0];
+    
+    // Clean markdown headings for clean bot presentation
+    const cleanChunkText = topChunk.text.replace(/^#+\s*/, '');
+    
+    const botResponse = `📖 **According to Northstar's official ${topChunk.file}:**\n\n${cleanChunkText}\n\n*Reference Document: ${topChunk.file} — "${topChunk.title}"*`;
+    
+    appendChatMessage('bot', botResponse);
+    attachFeedbackBanner('rag-policy');
+    
+    metricsState.resolvedWithoutHuman++;
+    saveMetrics();
+    consecutiveFailures = 0; // Reset failure count on successful RAG answer
+    return;
+  }
+
+  // --------------------------------------------------------------------------
+  // FALLBACK & CONSECUTIVE FAILURE ESCALATION
+  // If query fails RAG threshold and no structured intent matches
+  // --------------------------------------------------------------------------
+  consecutiveFailures++;
+  console.log(`[Consecutive Failure Count]: ${consecutiveFailures}`);
+
+  if (consecutiveFailures >= 2) {
+    // Operational Rule: Trigger escalation after 2 consecutive failed understanding inputs
+    appendChatMessage('bot', `🤔 I want to make sure you get the exact right answer, but I'm having trouble understanding your question.\n\nPer our policy, I am transferring you to a human team member so you aren't stuck in a loop.`);
+    openHandoffModal('2 Consecutive Unrecognized Queries', input);
+    consecutiveFailures = 0;
+  } else {
+    appendChatMessage('bot', `I'm sorry, I couldn't find a direct policy match for your question in our system.\n\nCould you try rephrasing (e.g. asking about *"order status #NS-104829"*, *"return policy"*, or *"shipping times"*), or click **Submit a Ticket** below to connect with our support team?`);
+    attachFeedbackBanner('failed-query');
+  }
+}
+
+
+// ============================================================================
+// 5. UI RENDERING & DOM HELPERS
+// ============================================================================
+
+/**
+ * Appends a message bubble into the live chat window.
+ * 
+ * @param {string} sender - 'user', 'bot', or 'system'
+ * @param {string} text - Markdown/HTML formatted message
+ */
+function appendChatMessage(sender, text) {
+  const container = document.getElementById('chat-messages-container');
+  if (!container) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = `flex gap-3 mb-4 text-sm animate-fade-in ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+
+  // Process simple Markdown formatting (bold, code, links)
+  const formattedText = formatMarkdownToHTML(text);
+
+  if (sender === 'user') {
+    wrapper.innerHTML = `
+      <div class="max-w-[82%] bg-indigo-600 text-white rounded-2xl rounded-tr-none px-4 py-3 shadow-md">
+        <p class="leading-relaxed whitespace-pre-line">${formattedText}</p>
+      </div>
+    `;
+  } else if (sender === 'bot') {
+    wrapper.innerHTML = `
+      <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-md shrink-0">
+        NS
+      </div>
+      <div class="max-w-[82%] bg-slate-800/90 border border-slate-700 text-slate-100 rounded-2xl rounded-tl-none px-4 py-3 shadow-md">
+        <div class="leading-relaxed whitespace-pre-line prose prose-invert prose-sm">${formattedText}</div>
+      </div>
+    `;
+  } else { // system message
+    wrapper.innerHTML = `
+      <div class="w-full text-center my-2">
+        <span class="inline-block bg-slate-800/60 border border-slate-700/60 text-slate-400 text-xs px-3 py-1.5 rounded-full">
+          ${formattedText}
+        </span>
+      </div>
+    `;
+  }
+
+  container.appendChild(wrapper);
+  container.scrollTop = container.scrollHeight;
+}
+
+/**
+ * Converts basic markdown tags into HTML for rendering.
+ */
+function formatMarkdownToHTML(text) {
+  if (!text) return '';
+  let html = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code class="bg-slate-900 text-cyan-300 px-1.5 py-0.5 rounded border border-slate-700 font-mono text-xs">$1</code>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-cyan-400 hover:underline font-medium font-semibold">$1 ↗</a>');
+  return html;
+}
+
+/**
+ * Attaches the Deflection Feedback Banner after bot answers.
+ * "Did this answer your question? [Yes] [No, submit ticket]"
+ */
+function attachFeedbackBanner(contextId) {
+  const container = document.getElementById('chat-messages-container');
+  if (!container) return;
+
+  const banner = document.createElement('div');
+  banner.className = 'my-3 p-3 bg-slate-900/80 border border-slate-700/70 rounded-xl text-xs flex flex-wrap items-center justify-between gap-2 animate-fade-in';
+  banner.id = `feedback-banner-${Date.now()}`;
+  
+  banner.innerHTML = `
+    <span class="text-slate-300 font-medium">Did this answer your question?</span>
+    <div class="flex items-center gap-2">
+      <button onclick="handleFeedbackResponse(true, '${banner.id}')" class="px-2.5 py-1 bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-300 border border-emerald-500/30 rounded-lg transition-colors font-medium">
+        👍 Yes, thanks
+      </button>
+      <button onclick="handleFeedbackResponse(false, '${banner.id}')" class="px-2.5 py-1 bg-rose-600/20 hover:bg-rose-600/40 text-rose-300 border border-rose-500/30 rounded-lg transition-colors font-medium">
+        👎 No, submit ticket
+      </button>
+    </div>
+  `;
+
+  container.appendChild(banner);
+  container.scrollTop = container.scrollHeight;
+}
+
+/**
+ * Handles user clicks on the Feedback Banner.
+ */
+function handleFeedbackResponse(isPositive, bannerId) {
+  const banner = document.getElementById(bannerId);
+  if (banner) {
+    if (isPositive) {
+      banner.innerHTML = `<span class="text-emerald-400 font-semibold">✨ Thank you for your feedback! Glad we could help.</span>`;
+    } else {
+      banner.innerHTML = `<span class="text-rose-400 font-semibold">Routing you to human support ticket form...</span>`;
+      openHandoffModal('User reported answer did not resolve question', 'Feedback banner clicked: No');
+    }
+  }
+}
+
+/**
+ * Shows the animated typing indicator dots.
+ */
+function showTypingIndicator() {
+  const container = document.getElementById('chat-messages-container');
+  if (!container) return;
+
+  const indicator = document.createElement('div');
+  indicator.id = 'typing-indicator';
+  indicator.className = 'flex gap-3 mb-4 text-sm justify-start items-center';
+  indicator.innerHTML = `
+    <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 text-xs font-bold shrink-0">NS</div>
+    <div class="bg-slate-800 border border-slate-700 text-slate-400 rounded-2xl rounded-tl-none px-4 py-2.5 shadow-md flex items-center gap-1.5">
+      <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></span>
+      <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+      <span class="w-2 h-2 bg-purple-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+    </div>
+  `;
+  container.appendChild(indicator);
+  container.scrollTop = container.scrollHeight;
+}
+
+/**
+ * Hides typing indicator.
+ */
+function hideTypingIndicator() {
+  const elem = document.getElementById('typing-indicator');
+  if (elem) elem.remove();
+}
+
+/**
+ * Opens Human Handoff Modal/Form.
+ */
+function openHandoffModal(reason, summary) {
+  const modal = document.getElementById('handoff-modal');
+  const summaryInput = document.getElementById('handoff-summary');
+  
+  if (summaryInput) {
+    summaryInput.value = summary ? `[Reason: ${reason}] ${summary}` : `Customer support request regarding Northstar products/orders.`;
+  }
+  
+  if (modal) modal.classList.remove('hidden');
+}
+
+/**
+ * Closes Human Handoff Modal.
+ */
+function closeHandoffModal() {
+  const modal = document.getElementById('handoff-modal');
+  if (modal) modal.classList.add('hidden');
+}
