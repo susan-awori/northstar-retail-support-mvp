@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Northstar Retail Co. — Self-Service AI Support Assistant</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts (Inter & Outfit) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.3s ease-out forwards',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(6px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<!-- ===================================================================== -->
+  <!-- JAVASCRIPT INCLUSIONS -->
+  <!-- ===================================================================== -->
+  <!-- RAG Engine script (loads policy markdown chunks) -->
+  <script src="rag.js"></script>
+  
+  <!-- App Controller script (business logic & UI handlers) -->
+  <script src="app.js"></script>
+
+</body>
+</html>
