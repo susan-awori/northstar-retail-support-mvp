@@ -159,3 +159,37 @@ class PolicyRAG {
           score += 3;
         }
       }
+ // 3. Exact multi-word phrase matching bonus
+      if (chunk.text.toLowerCase().includes(normalizedQuery)) {
+        score += 5;
+      }
+
+      return { ...chunk, score };
+    });
+
+    // Filter by threshold and sort highest score first
+    const matches = scoredChunks
+      .filter(item => item.score >= minThreshold)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 2); // Return top 1-2 most relevant chunks
+
+    if (matches.length === 0) {
+      return {
+        found: false,
+        reason: 'No policy chunk met the minimal relevance threshold. Honesty rule: Escalating to human rather than guessing.',
+        chunks: []
+      };
+    }
+
+    return {
+      found: true,
+      topScore: matches[0].score,
+      chunks: matches
+    };
+  }
+}
+
+// Global instance for browser window scope
+window.policyRAG = new PolicyRAG();
+rag.js
+Displaying rag.js.
