@@ -47,3 +47,31 @@ class PolicyRAG {
       'while', 'who', 'whom', 'why', 'with', 'would', 'you', 'your', 'yours'
     ]);
   }
+ /**
+   * Initializes the RAG engine by fetching and indexing the policy Markdown files.
+   */
+  async init() {
+    if (this.isInitialized) return;
+
+    const policyFiles = [
+      { name: 'Returns Policy', path: 'policies/returns-policy.md' },
+      { name: 'Shipping Policy', path: 'policies/shipping-policy.md' },
+      { name: 'FAQ', path: 'policies/faq.md' }
+    ];
+
+    try {
+      for (const policy of policyFiles) {
+        const response = await fetch(policy.path);
+        if (!response.ok) {
+          console.warn(`[RAG Warning] Could not fetch ${policy.path}. Status: ${response.status}`);
+          continue;
+        }
+        const text = await response.text();
+        this.chunkAndIndexFile(policy.name, text);
+      }
+          this.isInitialized = true;
+      console.log(`[RAG System] Successfully indexed ${this.chunks.length} policy chunks.`);
+    } catch (err) {
+      console.error('[RAG Error] Failed to initialize policy RAG index:', err);
+    }
+  }
