@@ -349,3 +349,100 @@ function processReturnEligibility(orderId, purchaseDateStr) {
     daysElapsed: diffDays
   };
 }
+
+/**
+ * FEATURE 3: Track Refund Status
+ * 
+ * @param {string} query - Order number, Return ID (#RET-XXXX), or Tracking ID
+ * @returns {Object} { found: boolean, message: string }
+ */
+function trackRefund(query) {
+  const clean = (query || '').trim().toUpperCase();
+
+  const retRecord = appData.returns.find(r => 
+    r.returnId.toUpperCase() === clean || 
+    r.orderNumber.toUpperCase() === clean || 
+    r.trackingId.toUpperCase() === clean
+  );
+
+  if (!retRecord) {
+    return {
+      found: false,
+      message: `🔎 We couldn't find an active return record matching **${clean}**.\n\nIf you recently dropped off your parcel, please allow 24 hours for carrier scan updates. You can also start a return at \`www.northstarretail.com/returns\`.`
+    };
+  }
+
+  let statusMsg = '';
+  switch (retRecord.status) {
+    case 'In Transit to Warehouse':
+      statusMsg = `🚚 **Refund Status: In Transit to Warehouse**\n\n- **Return ID**: ${retRecord.returnId}\n- **Order Number**: ${retRecord.orderNumber}\n- **Courier Status**: Package is in transit to our return hub.\n- **Estimated Refund**: ${retRecord.netRefund}\n\n*Once received at our hub, quality inspection takes 1–2 business days before refund release.*`;
+      break;
+
+    case 'Received & Inspecting':
+      statusMsg = `🔍 **Refund Status: Received & Inspecting**\n\n- **Return ID**: ${retRecord.returnId}\n- **Order Number**: ${retRecord.orderNumber}\n- **Status**: Package arrived at warehouse. Quality inspection is in progress.\n- **Expected Approval**: Within 24-48 business hours.`;
+      break;
+
+    case 'Refund Issued':
+      statusMsg = `💰 **Refund Status: Refund Issued**\n\n- **Return ID**: ${retRecord.returnId}\n- **Order Number**: ${retRecord.orderNumber}\n- **Net Refund Amount**: **${retRecord.netRefund}**\n- **Issued Date**: ${retRecord.refundDate}\n\n*Please allow 3–5 business days for your banking institution to reflect the credit.*`;
+      break;
+
+    default:
+      statusMsg = `ℹ️ Return **${retRecord.returnId}** status: **${retRecord.status}**. ${retRecord.statusDetails}`;
+  }
+
+  // Increment deflection count
+  metricsState.resolvedWithoutHuman++;
+  saveMetrics();
+  consecutiveFailures = 0;
+
+  return {
+    found: true,
+    message: statusMsg
+  };
+}
+
+
+/**
+ * FEATURE 4: Stock Checker Widget (Honest Mock Limitations per Conscience Compass)
+ * 
+ * Logic Rules:
+ * - Discloses honestly that real-time stock cannot be guaranteed via chat.
+ * - Offers a "Notify Me" back-in-stock alert.
+ * - LOGS AS A PARTIAL/SOFT DEFLECTION (does NOT count as full deflection).
+ * 
+ * @param {string} sku - Stock Keeping Unit (e.g. SKU-DRS-002)
+ * @param {string} size - Size (S, M, L, 38, etc.)
+ * @returns {Object} { message: string }
+ */
+function checkStock(sku, size) {
+  const cleanSku = (sku || '').trim().toUpperCase();
+  const cleanSize = (size || '').trim().toUpperCase();
+
+  const item = appData.inventory.find(i => 
+    i.sku.toUpperCase() === cleanSku || 
+    i.name.toUpperCase().includes(cleanSku)
+  );
+
+  let responseMessage = '';
+
+  // Conscience Compass Honesty Note
+  const honestyNotice = `\n\n*Note: To prevent inventory discrepancies during peak hours, this widget shows estimated warehouse stock. For real-time cart reservation, please visit the product page directly.*`;
+
+  if (item) {
+    if (item.inStock) {
+      responseMessage = `🏷️ **Inventory Status: IN STOCK**\n\n- **Item**: ${item.name} (\`${item.sku}\`)\n- **Size**: ${cleanSize || item.size}\n- **Availability**: Available at warehouse (${item.stockQuantity} units remaining).${honestyNotice}`;
+    } else {
+      responseMessage = `📌 **Inventory Status: OUT OF STOCK**\n\n- **Item**: ${item.name} (\`${item.sku}\`)\n- **Size**: ${cleanSize || item.size}\n- **Availability**: Currently unavailable at central warehouse.\n\n🔔 **Would you like to be notified when this item is restocked?**\nClick below to register your email for a **Restock Notification Alert**.${honestyNotice}`;
+    }
+  } else {
+    responseMessage = `🔎 **Stock Search for "${cleanSku}"**\n\nWe couldn't find exact SKU \`${cleanSku}\`. Popular items like the *All-Weather Transit Jacket* (\`SKU-JKT-001\`) and *Waterproof Backpack* (\`SKU-BAG-005\`) are currently in stock.${honestyNotice}`;
+  }
+
+  // Increment Partial / Soft Deflection Counter (Distinct from main deflection counter)
+  metricsState.softDeflections++;
+  saveMetrics();
+
+  return {
+    message: responseMessage
+  };
+}
