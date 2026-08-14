@@ -1,0 +1,82 @@
+{
+    "inventory": [
+    {
+      "sku": "SKU-JKT-001",
+      "name": "All-Weather Transit Jacket",
+      "category": "Outerwear",
+      "size": "L",
+      "inStock": true,
+      "stockQuantity": 14
+    },
+    {
+      "sku": "SKU-DRS-002",
+      "name": "Silk Linen Summer Dress",
+      "category": "Apparel",
+      "size": "M",
+      "inStock": false,
+      "stockQuantity": 0
+    },
+    {
+      "sku": "SKU-SH-003",
+      "name": "Urban Canvas Sneakers",
+      "category": "Footwear",
+      "size": "38",
+      "inStock": true,
+      "stockQuantity": 6
+    },
+    {
+      "sku": "SKU-PNTS-004",
+      "name": "Flex-Fit Chino Trousers",
+      "category": "Apparel",
+      "size": "32",
+      "inStock": false,
+      "stockQuantity": 0
+    },
+    {
+      "sku": "SKU-BAG-005",
+      "name": "Waterproof Commuter Backpack",
+      "category": "Accessories",
+      "size": "One Size",
+      "inStock": true,
+      "stockQuantity": 22
+    }
+  ],
+  "returns": [
+    {
+      "returnId": "#RET-1001",
+      "orderNumber": "#NS-583920",
+      "customerEmail": "emmanuel@example.com",
+      "status": "In Transit to Warehouse",
+      "statusDetails": "Your return parcel is in transit via courier to our central return processing hub.",
+      "refundAmount": "$129.99",
+      "refundFeeDeducted": "$5.99",
+      "netRefund": "$124.00",
+      "refundDate": "Pending Receipt",
+      "trackingId": "RET-TRK-9901"
+    },
+    {
+      "returnId": "#RET-1002",
+      "orderNumber": "#NS-381940",
+      "customerEmail": "charles@example.com",
+      "status": "Received & Inspecting",
+      "statusDetails": "Parcel arrived at warehouse on Aug 13. Quality inspection in progress (typically takes 1-2 business days).",
+      "refundAmount": "$54.50",
+      "refundFeeDeducted": "$0.00 (Store Credit Exchange)",
+      "netRefund": "$54.50 Store Credit",
+      "refundDate": "Processing",
+      "trackingId": "RET-TRK-9902"
+    },
+    {
+      "returnId": "#RET-1003",
+      "orderNumber": "#NS-104829",
+      "customerEmail": "alex@example.com",
+      "status": "Refund Issued",
+      "statusDetails": "Return approved and refund released to original Visa card ending in 4092.",
+      "refundAmount": "$89.95",
+      "refundFeeDeducted": "$5.99",
+      "netRefund": "$83.96",
+      "refundDate": "08/05/2026",
+      "trackingId": "RET-TRK-9903"
+    }
+  ]
+}
