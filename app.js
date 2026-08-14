@@ -286,3 +286,66 @@ function checkOrderStatus(orderId, email) {
       responseText = `ℹ️ Order **${order.orderNumber}** status: **${order.status}**. ${order.statusDetails}`;
   }
 
+  // Increment Deflection Metric on Successful Resolution
+  metricsState.resolvedWithoutHuman++;
+  saveMetrics();
+  consecutiveFailures = 0; // Reset failure count
+
+  return {
+    success: true,
+    message: responseText,
+    data: order
+  };
+}
+
+
+/**
+ * FEATURE 2: Process Return Eligibility & Instructions
+ * 
+ * Logic Rules:
+ * - Checks 30-day window from purchase/delivery date.
+ * - If eligible: shows Scenario B1 return portal steps + free exchange vs $5.99 refund fee.
+ * - If not eligible (> 30 days): explains 30-day policy window limit.
+ * 
+ * @param {string} orderId - Order number
+ * @param {string} purchaseDateStr - Purchase date (MM/DD/YYYY)
+ * @returns {Object} { eligible: boolean, message: string }
+ */
+function processReturnEligibility(orderId, purchaseDateStr) {
+  const cleanOrderId = (orderId || '').trim().toUpperCase();
+
+  // Try finding order in mockData if orderId provided
+  const order = appData.orders.find(o => o.orderNumber.toUpperCase() === cleanOrderId);
+  const dateToTest = order ? order.purchaseDate : (purchaseDateStr || '08/01/2026');
+
+  // Calculate days elapsed (Current mock baseline date: Aug 14, 2026)
+  const currentDate = new Date('2026-08-14');
+  const purchaseDate = new Date(dateToTest);
+  const diffTime = Math.abs(currentDate - purchaseDate);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  const IS_ELIGIBLE = diffDays <= 30;
+
+  let responseMessage = '';
+
+  if (IS_ELIGIBLE) {
+    responseMessage = `🔄 **Return & Exchange Eligibility: APPROVED**\n\nOrder **${cleanOrderId || '#NS-XXXXXX'}** was purchased on ${dateToTest} (${diffDays} days ago) and is **eligible** for return or exchange under our 30-day policy.\n\n**Next Steps to Start Your Return:**\n1. Visit our Return Portal: \`www.northstarretail.com/returns\`\n2. Enter your Order Number (**${cleanOrderId || '#NS-XXXXXX'}**) and Email.\n3. Select your preferred option:\n   - 🎁 **Exchange for another size/color (FREE)** — Zero restocking fee!\n   - 💳 **Refund to original payment method** — A flat $5.99 shipping/processing fee will be deducted.\n4. Print your prepaid return shipping label and drop off the package.\n\n*Refunds process within 3–5 business days after our warehouse receives and inspects your item.*`;
+
+    // Increment deflection count
+    metricsState.resolvedWithoutHuman++;
+    saveMetrics();
+    consecutiveFailures = 0;
+  } else {
+    responseMessage = `⚠️ **Return Eligibility: EXPIRED**\n\nOrder **${cleanOrderId || '#NS-XXXXXX'}** was purchased on ${dateToTest} (${diffDays} days ago). Our return policy strictly requires returns to be initiated within **30 days** of purchase.\n\nIf your item arrived damaged or defective, please click **Submit a Ticket** below to request an exception review with our support team.`;
+    
+    // Non-eligible still deflects repetitive return ticket if policy explained, but user can escalate
+    metricsState.resolvedWithoutHuman++;
+    saveMetrics();
+  }
+
+  return {
+    eligible: IS_ELIGIBLE,
+    message: responseMessage,
+    daysElapsed: diffDays
+  };
+}
