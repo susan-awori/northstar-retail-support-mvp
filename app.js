@@ -788,3 +788,82 @@ function closeHandoffModal() {
   const modal = document.getElementById('handoff-modal');
   if (modal) modal.classList.add('hidden');
 }
+
+// ============================================================================
+// 6. EVENT LISTENERS SETUP
+// ============================================================================
+
+function setupEventListeners() {
+  // Simulated Login Dropdown Switcher
+  const loginSelect = document.getElementById('simulated-login-select');
+  if (loginSelect) {
+    loginSelect.addEventListener('change', (e) => {
+      handleCustomerSessionSwitch(e.target.value);
+    });
+  }
+
+  // Chat Input Submit
+  const chatForm = document.getElementById('chat-form');
+  const chatInput = document.getElementById('chat-input');
+
+  if (chatForm && chatInput) {
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = chatInput.value;
+      if (val) {
+        handleUserChatMessage(val);
+        chatInput.value = '';
+      }
+    });
+  }
+
+  // Quick Action Buttons (Order Lookup Card)
+  const orderForm = document.getElementById('card-order-form');
+  if (orderForm) {
+    orderForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const num = document.getElementById('order-num-input').value;
+      const email = document.getElementById('order-email-input').value;
+      
+      handleUserChatMessage(`Check order status for ${num} with email ${email}`);
+    });
+  }
+
+  // Quick Action Buttons (Return Eligibility Card)
+  const returnForm = document.getElementById('card-return-form');
+  if (returnForm) {
+    returnForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const num = document.getElementById('return-order-input').value;
+      
+      handleUserChatMessage(`I want to return item from order ${num}`);
+    });
+  }
+
+  // Quick Action Buttons (Stock Checker Card)
+  const stockForm = document.getElementById('card-stock-form');
+  if (stockForm) {
+    stockForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const sku = document.getElementById('stock-sku-input').value;
+      const size = document.getElementById('stock-size-input').value;
+      
+      handleUserChatMessage(`Check stock for ${sku} in size ${size}`);
+    });
+  }
+
+  // Handoff Form Submission
+  const handoffForm = document.getElementById('handoff-form');
+  if (handoffForm) {
+    handoffForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('handoff-name').value;
+      const email = document.getElementById('handoff-email').value;
+      const summary = document.getElementById('handoff-summary').value;
+
+      const result = escalateToHuman(name, email, summary);
+      closeHandoffModal();
+      appendChatMessage('bot', result.message);
+    });
+  }
+}
