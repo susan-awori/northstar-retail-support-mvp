@@ -19,3 +19,6 @@ We accept Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay, and
 
 ### Can I change item sizes or add items after checkout?
 Once an order is placed, items cannot be added or edited. We recommend canceling the order within 30 minutes if eligible, or placing a second order for the new items.
+
+### How do gift cards and promo codes work?
+Discount codes and digital gift cards must be entered at checkout in the "Promo Code" box. Only one discount code can be applied per order.
