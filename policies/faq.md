@@ -22,3 +22,6 @@ Once an order is placed, items cannot be added or edited. We recommend canceling
 
 ### How do gift cards and promo codes work?
 Discount codes and digital gift cards must be entered at checkout in the "Promo Code" box. Only one discount code can be applied per order.
+
+### What should I do if I received a damaged or wrong item?
+If your order arrived damaged or you received the incorrect item, please select **Submit a Ticket** or request a human agent immediately. We will issue a prepaid return label and rush a replacement item to you at no extra charge.
