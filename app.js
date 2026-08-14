@@ -446,3 +446,111 @@ function checkStock(sku, size) {
     message: responseMessage
   };
 }
+
+
+/**
+ * FEATURE 5: Escalate to Human Support Ticket
+ * 
+ * Trigger Cases:
+ * - Explicit customer request ("agent", "human", "representative")
+ * - 2 consecutive failed-understanding queries
+ * - Complex/high-risk scenarios (damaged goods, wrong items, account changes)
+ * 
+ * @param {string} name - Customer Name
+ * @param {string} email - Customer Email
+ * @param {string} summary - Problem description
+ * @returns {Object} { ticketId: string, message: string }
+ */
+function escalateToHuman(name, email, summary) {
+  const ticketId = `#TKT-${Math.floor(100000 + Math.random() * 900000)}`;
+  const custName = name || (currentCustomer ? currentCustomer.name : 'Customer');
+  const custEmail = email || (currentCustomer ? currentCustomer.email : 'Not provided');
+  const issueSummary = summary || 'General support inquiry escalated from self-service widget.';
+
+  const responseText = `🎧 **Support Ticket Generated: ${ticketId}**\n\nThank you, **${custName}**. We have escalated your request directly to Northstar's senior customer care team.\n\n- **Ticket ID**: \`${ticketId}\`\n- **Email Contact**: ${custEmail}\n- **Issue Summary**: "${issueSummary}"\n- **Estimated Response Time**: Within 2 to 4 business hours.\n\nA confirmation copy has been sent to your email. You can close this chat or ask another question.`;
+
+  // Increment Escalated Counter (Not the deflection counter)
+  metricsState.escalatedToHuman++;
+  saveMetrics();
+  consecutiveFailures = 0; // Reset failure counter
+
+  return {
+    ticketId,
+    message: responseText
+  };
+}
+
+
+// ============================================================================
+// 4. UNIFIED CHAT CONTROLLER & INTENT ROUTER
+// ============================================================================
+
+/**
+ * Handles incoming chat messages from the user interface.
+ * Routes structured lookups to specific logic handlers and unstructured queries to policy RAG.
+ * 
+ * @param {string} userMessage - Text entered by customer
+ */
+async function handleUserChatMessage(userMessage) {
+  const trimmed = (userMessage || '').trim();
+  if (!trimmed) return;
+
+  // Render User Message in Chat Window
+  appendChatMessage('user', trimmed);
+
+  // Show typing indicator
+  showTypingIndicator();
+
+  // Simulate realistic network delay for smooth UX (400ms)
+  setTimeout(async () => {
+    hideTypingIndicator();
+    processChatMessageIntents(trimmed);
+  }, 400);
+}
+
+/**
+ * Internal intent processor for chat text.
+ * @param {string} input - Cleaned user message text
+ */
+function processChatMessageIntents(input) {
+  const lower = input.toLowerCase();
+
+  // --------------------------------------------------------------------------
+  // ESCALATION RULE A: Explicit Human Request or High-Risk Trigger
+  // --------------------------------------------------------------------------
+  const humanTriggers = ['human', 'agent', 'representative', 'person', 'support team', 'speak to someone', 'talk to human', 'real person'];
+  const highRiskTriggers = ['damaged', 'wrong item', 'stolen package', 'fraud', 'cancel account'];
+
+  const isExplicitHumanRequest = humanTriggers.some(term => lower.includes(term));
+  const isHighRiskScenario = highRiskTriggers.some(term => lower.includes(term));
+
+  if (isExplicitHumanRequest || isHighRiskScenario) {
+    const reason = isHighRiskScenario ? 'High-risk item issue requiring human review' : 'Explicit customer request for human agent';
+    appendChatMessage('bot', `I completely understand. Let me connect you directly to our human customer support team.`);
+    openHandoffModal(reason, input);
+    return;
+  }
+
+  // --------------------------------------------------------------------------
+  // INTENT 1: Order Status Intent (#NS-XXXXXX regex or keywords)
+  // --------------------------------------------------------------------------
+  const nsOrderRegex = /#?NS-\d{6}/i;
+  const orderMatch = input.match(nsOrderRegex);
+
+  if (orderMatch || lower.includes('order status') || lower.includes('where is my package') || lower.includes('track my order')) {
+    let orderNum = orderMatch ? orderMatch[0] : '';
+    
+    // Normalize format to include '#'
+    if (orderNum && !orderNum.startsWith('#')) orderNum = '#' + orderNum;
+
+    if (!orderNum) {
+      appendChatMessage('bot', `I can help you check your order status! Please enter your **6-digit Order Number** in **#NS-XXXXXX** format (e.g. \`#NS-104829\`) along with your email address.`);
+      return;
+    }
+
+    const emailToUse = currentCustomer ? currentCustomer.email : '';
+    const result = checkOrderStatus(orderNum, emailToUse);
+    appendChatMessage('bot', result.message);
+    if (result.success) attachFeedbackBanner('order-lookup');
+    return;
+  }
