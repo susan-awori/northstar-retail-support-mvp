@@ -75,3 +75,34 @@ class PolicyRAG {
       console.error('[RAG Error] Failed to initialize policy RAG index:', err);
     }
   }
+ /**
+   * Splits a Markdown document into readable paragraph chunks and indexes their terms.
+   * @param {string} fileName - Friendly label of the policy document
+   * @param {string} rawMarkdown - Unprocessed Markdown string
+   */
+  chunkAndIndexFile(fileName, rawMarkdown) {
+    // Split Markdown document by double line breaks (paragraphs) or headers
+    const rawParagraphs = rawMarkdown
+      .split(/\n\s*\n/)
+      .map(p => p.trim())
+      .filter(p => p.length > 30); // Skip tiny headings or empty lines
+
+    let currentSectionTitle = fileName;
+
+    for (const paragraph of rawParagraphs) {
+      // Check if paragraph is a Markdown heading (e.g. ### Can I change my address?)
+      if (paragraph.startsWith('#')) {
+        currentSectionTitle = paragraph.replace(/^#+\s*/, '').trim();
+      }
+
+      // Extract cleaned word tokens for keyword matching
+      const words = this.tokenize(paragraph);
+
+      this.chunks.push({
+        file: fileName,
+        title: currentSectionTitle,
+        text: paragraph,
+        keywords: new Set(words)
+      });
+    }
+  }
