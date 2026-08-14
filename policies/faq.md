@@ -16,3 +16,6 @@ Yes! Northstar Retail Co. ships to over 40 countries globally via DHL Express an
 
 ### What payment methods do you accept?
 We accept Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay, and regional mobile money options like M-PESA.
+
+### Can I change item sizes or add items after checkout?
+Once an order is placed, items cannot be added or edited. We recommend canceling the order within 30 minutes if eligible, or placing a second order for the new items.
