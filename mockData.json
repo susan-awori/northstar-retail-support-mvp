@@ -26,6 +26,7 @@
       "email": "emmanuel@example.com"
     }
   ],
+
   "orders": [
     {
       "orderNumber": "#NS-104829",
@@ -49,8 +50,8 @@
         }
       ]
     },
-
-    "orderNumber": "#NS-294018",
+    {
+      "orderNumber": "#NS-294018",
       "customerEmail": "beatrice@example.com",
       "customerName": "Beatrice Wanjiru",
       "status": "Processing",
@@ -144,3 +145,5 @@
         }
       ]
     }
+  ]
+}
