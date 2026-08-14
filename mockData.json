@@ -1,0 +1,51 @@
+{
+  "customers": [
+    {
+      "id": "CUST-001",
+      "name": "Alex Mercer",
+      "email": "alex@example.com"
+    },
+    {
+      "id": "CUST-002",
+      "name": "Beatrice Wanjiru",
+      "email": "beatrice@example.com"
+    },
+    {
+      "id": "CUST-003",
+      "name": "Charles Kipchoge",
+      "email": "charles@example.com"
+    },
+    {
+      "id": "CUST-004",
+      "name": "Diana Prince",
+      "email": "diana@example.com"
+    },
+    {
+      "id": "CUST-005",
+      "name": "Emmanuel Otieno",
+      "email": "emmanuel@example.com"
+    }
+  ],
+  "orders": [
+    {
+      "orderNumber": "#NS-104829",
+      "customerEmail": "alex@example.com",
+      "customerName": "Alex Mercer",
+      "status": "Out for Delivery",
+      "statusDetails": "Your package is with the local courier driver and scheduled for delivery today.",
+      "purchaseDate": "08/10/2026",
+      "estimatedDelivery": "08/14/2026",
+      "carrier": "FedEx Express",
+      "trackingNumber": "FDX-88291034",
+      "trackingUrl": "https://tracking.northstarretail.com/track?id=FDX-88291034",
+      "shippingAddress": "**** Main St, Nairobi",
+      "items": [
+        {
+          "sku": "SKU-JKT-001",
+          "name": "All-Weather Transit Jacket",
+          "size": "L",
+          "quantity": 1,
+          "price": 129.99
+        }
+      ]
+    },
