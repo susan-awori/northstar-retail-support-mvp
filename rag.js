@@ -105,4 +105,57 @@ class PolicyRAG {
         keywords: new Set(words)
       });
     }
+  } /**
+   * Converts a text string into an array of normalized keyword tokens.
+   * @param {string} text - Input text
+   * @returns {string[]} Filtered lowercase words
+   */
+  tokenize(text) {
+    return text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '') // remove punctuation
+      .split(/\s+/)
+      .filter(w => w.length > 2 && !this.stopWords.has(w));
   }
+
+  /**
+   * Queries the policy knowledge base and returns top matching chunks.
+   * 
+   * @param {string} query - Free-text question from the customer
+   * @param {number} minThreshold - Minimum score required to avoid hallucinated/guessing answers
+   * @returns {Object} Result object containing matches or fallback signal
+   */
+  retrieve(query, minThreshold = 2) {
+    if (!this.isInitialized || this.chunks.length === 0) {
+      return {
+        found: false,
+        reason: 'RAG policy index is not loaded yet.',
+        chunks: []
+      };
+    }
+
+    const queryTokens = this.tokenize(query);
+    const normalizedQuery = query.toLowerCase();
+
+    if (queryTokens.length === 0) {
+      return { found: false, reason: 'Query contained no searchable keywords.', chunks: [] };
+    }
+
+    // Score every indexed chunk against query keywords
+    const scoredChunks = this.chunks.map(chunk => {
+      let score = 0;
+
+      // 1. Keyword overlap score
+      for (const token of queryTokens) {
+        if (chunk.keywords.has(token)) {
+          score += 2; // Basic word match
+        }
+      }
+
+      // 2. Bonus points if query matches the section title/heading
+      const titleLower = chunk.title.toLowerCase();
+      for (const token of queryTokens) {
+        if (titleLower.includes(token)) {
+          score += 3;
+        }
+      }
