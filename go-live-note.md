@@ -87,3 +87,20 @@ Replace the static `rag.js` keyword matcher with a production-grade semantic Vec
 - Log ticket cost savings: Calculate monthly financial deflection ROI based on Northstar's average cost per human support ticket.
 
 ---
+## 4. Architectural Summary Diagram
+
+```
+[ Customer Browser ]
+       │
+       ├──► 1. Order Lookups ────► [ Northstar API Gateway ] ───► [ PostgreSQL / ERP ]
+       │                                (OAuth2 / JWT)
+       │
+       ├──► 2. Policy Questions ──► [ Vector DB Search ] ──────► [ Embeddings Index ]
+       │                                (Pinecone/PGVector)
+       │
+       └──► 3. Ticket Handoff ───► [ Zendesk / Freshdesk ] ───► [ Senior Support Team ]
+```
+
+---
+
+*Go-Live Architecture Note prepared for Northstar Retail Co. Engineering Team.*
