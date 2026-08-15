@@ -54,3 +54,20 @@ Before deploying this widget to production on `www.northstarretail.com`, Northst
 - Replace the simulated customer dropdown with Northstar's production identity provider (e.g., Auth0, Supabase Auth, or custom session cookies).
 - When a customer logs into Northstar Retail Co., pass their encrypted session token to the widget initialization script (`NorthstarWidget.init({ token: userToken })`).
 - Unauthenticated guest users must complete email verification (OTP or order number + email check) before order details are displayed.
+
+### 🧠 3.3 Automated Vector Store RAG Sync Pipeline
+Replace the static `rag.js` keyword matcher with a production-grade semantic Vector RAG pipeline:
+```
+[Northstar Help Center / CMS] 
+          │ (Webhooks on policy edit)
+          ▼
+[Text Embedding Model (OpenAI text-embedding-3 / Claude API)]
+          │ (Generate 1536-dim vector embeddings)
+          ▼
+[Vector Database (Pinecone / PGVector / Qdrant)]
+          │ (Vector Similarity Search cosine/dot-product)
+          ▼
+[LLM Generation Layer with Guardrails]
+```
+- **Automated Re-Indexing**: Configure CMS webhooks so that whenever Northstar updates policy pages, the vector store automatically updates embeddings.
+- **Strict Prompt Scoping**: Instruct the LLM to restrict answers *only* to context retrieved from the vector database.
