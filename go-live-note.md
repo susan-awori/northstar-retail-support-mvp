@@ -38,3 +38,19 @@ To deliver a self-contained, zero-dependency client-side MVP, the following comp
 | **Analytics** | In-browser `localStorage` counter state | Deflection metrics exist only per user browser session, not globally. |
 
 ---
+## 3. Phase 2 Real Data Integration Requirements (Production Roadmap)
+
+Before deploying this widget to production on `www.northstarretail.com`, Northstar's engineering team must complete the following 5 integration steps:
+
+### 🔒 3.1 Backend API Layer & Database Decoupling
+> [!CAUTION]
+> **Never connect the frontend widget directly to database credentials or raw DB connections.**
+
+- Create an isolated, authenticated backend API gateway (e.g., `GET /api/v1/orders/:id`, `POST /api/v1/returns/initiate`).
+- The bot frontend will issue HTTP requests to Northstar's API gateway using short-lived OAuth2 / JWT access tokens.
+- Implement rate limiting (e.g., 10 lookup requests per minute per IP/user) to prevent brute-force order scraping.
+
+### 🔑 3.2 Production Identity & Auth Integration
+- Replace the simulated customer dropdown with Northstar's production identity provider (e.g., Auth0, Supabase Auth, or custom session cookies).
+- When a customer logs into Northstar Retail Co., pass their encrypted session token to the widget initialization script (`NorthstarWidget.init({ token: userToken })`).
+- Unauthenticated guest users must complete email verification (OTP or order number + email check) before order details are displayed.
