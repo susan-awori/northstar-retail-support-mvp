@@ -79,3 +79,11 @@ Replace the static `rag.js` keyword matcher with a production-grade semantic Vec
 - **Data Minimisation**: The widget API must return only the minimal attributes required to answer the question (e.g., masked address `**** Main St, Nairobi`, status, carrier name). Never return credit card numbers, passwords, or full billing addresses.
 - **Audit Logging**: Store immutable, encrypted audit logs of all bot lookups and escalations for compliance reviews.
 - **Consent Banner**: Ensure the chat widget explicitly notifies users about automated data processing before starting a session.
+
+### 📊 3.5 Server-Side Deflection Telemetry
+- Migrate deflection metric collection from `localStorage` to a server-side analytics pipeline (e.g., Segment, Mixpanel, or custom PostgreSQL telemetry table).
+- Track deflection funnels:
+  $$\text{Deflection Rate (\%)} = \frac{\text{Resolved Self-Service Interactions}}{\text{Total Support Interactions}} \times 100$$
+- Log ticket cost savings: Calculate monthly financial deflection ROI based on Northstar's average cost per human support ticket.
+
+---
