@@ -26,3 +26,15 @@ The current MVP prototype running via [`index.html`](file:///c:/Users/user/OneDr
   - Damaged items, wrong shipments, or explicit requests (*"agent"*, *"human"*) immediately trigger escalation to a human support ticket (`#TKT-XXXXXX`).
 
 ---
+## 2. What is Simulated / Mocked for Demo Purposes
+
+To deliver a self-contained, zero-dependency client-side MVP, the following components are currently simulated:
+
+| Component | MVP Implementation | Production Risk if Unchanged |
+| :--- | :--- | :--- |
+| **Data Layer** | Local static JSON file ([`mockData.json`](file:///c:/Users/user/OneDrive/Desktop/Northstart/mockData.json)) | Out-of-date data, security exposure if raw JSON exposed on public web server. |
+| **Authentication** | Simulated customer dropdown switching `currentCustomer` session variable | Zero security/auth verification. Anyone can view mock orders. |
+| **RAG Indexing** | In-browser keyword matching over static `.md` text chunks | Scalability limits; cannot process complex semantic search or synonyms. |
+| **Analytics** | In-browser `localStorage` counter state | Deflection metrics exist only per user browser session, not globally. |
+
+---
