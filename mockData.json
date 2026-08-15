@@ -1,0 +1,228 @@
+{
+  "inventory": [
+    {
+      "sku": "SKU-JKT-001",
+      "name": "All-Weather Transit Jacket",
+      "category": "Outerwear",
+      "size": "L",
+      "inStock": true,
+      "stockQuantity": 14
+    },
+    {
+      "sku": "SKU-DRS-002",
+      "name": "Silk Linen Summer Dress",
+      "category": "Apparel",
+      "size": "M",
+      "inStock": false,
+      "stockQuantity": 0
+    },
+    {
+      "sku": "SKU-SH-003",
+      "name": "Urban Canvas Sneakers",
+      "category": "Footwear",
+      "size": "38",
+      "inStock": true,
+      "stockQuantity": 6
+    },
+    {
+      "sku": "SKU-PNTS-004",
+      "name": "Flex-Fit Chino Trousers",
+      "category": "Apparel",
+      "size": "32",
+      "inStock": false,
+      "stockQuantity": 0
+    },
+    {
+      "sku": "SKU-BAG-005",
+      "name": "Waterproof Commuter Backpack",
+      "category": "Accessories",
+      "size": "One Size",
+      "inStock": true,
+      "stockQuantity": 22
+    }
+  ],
+  "returns": [
+    {
+      "returnId": "#RET-1001",
+      "orderNumber": "#NS-583920",
+      "customerEmail": "emmanuel@example.com",
+      "status": "In Transit to Warehouse",
+      "statusDetails": "Your return parcel is in transit via courier to our central return processing hub.",
+      "refundAmount": "$129.99",
+      "refundFeeDeducted": "$5.99",
+      "netRefund": "$124.00",
+      "refundDate": "Pending Receipt",
+      "trackingId": "RET-TRK-9901"
+    },
+    {
+      "returnId": "#RET-1002",
+      "orderNumber": "#NS-381940",
+      "customerEmail": "charles@example.com",
+      "status": "Received & Inspecting",
+      "statusDetails": "Parcel arrived at warehouse on Aug 13. Quality inspection in progress (typically takes 1-2 business days).",
+      "refundAmount": "$54.50",
+      "refundFeeDeducted": "$0.00 (Store Credit Exchange)",
+      "netRefund": "$54.50 Store Credit",
+      "refundDate": "Processing",
+      "trackingId": "RET-TRK-9902"
+    },
+    {
+      "returnId": "#RET-1003",
+      "orderNumber": "#NS-104829",
+      "customerEmail": "alex@example.com",
+      "status": "Refund Issued",
+      "statusDetails": "Return approved and refund released to original Visa card ending in 4092.",
+      "refundAmount": "$89.95",
+      "refundFeeDeducted": "$5.99",
+      "netRefund": "$83.96",
+      "refundDate": "08/05/2026",
+      "trackingId": "RET-TRK-9903"
+    }
+  ],
+  "customers": [
+    {
+      "id": "CUST-001",
+      "name": "Alex Mercer",
+      "email": "alex@example.com"
+    },
+    {
+      "id": "CUST-002",
+      "name": "Beatrice Wanjiru",
+      "email": "beatrice@example.com"
+    },
+    {
+      "id": "CUST-003",
+      "name": "Charles Kipchoge",
+      "email": "charles@example.com"
+    },
+    {
+      "id": "CUST-004",
+      "name": "Diana Prince",
+      "email": "diana@example.com"
+    },
+    {
+      "id": "CUST-005",
+      "name": "Emmanuel Otieno",
+      "email": "emmanuel@example.com"
+    }
+  ],
+  "orders": [
+    {
+      "orderNumber": "#NS-104829",
+      "customerEmail": "alex@example.com",
+      "customerName": "Alex Mercer",
+      "status": "Out for Delivery",
+      "statusDetails": "Your package is with the local courier driver and scheduled for delivery today.",
+      "purchaseDate": "08/10/2026",
+      "estimatedDelivery": "08/14/2026",
+      "carrier": "FedEx Express",
+      "trackingNumber": "FDX-88291034",
+      "trackingUrl": "https://tracking.northstarretail.com/track?id=FDX-88291034",
+      "shippingAddress": "**** Main St, Nairobi",
+      "items": [
+        {
+          "sku": "SKU-JKT-001",
+          "name": "All-Weather Transit Jacket",
+          "size": "L",
+          "quantity": 1,
+          "price": 129.99
+        }
+      ]
+    },
+    {
+      "orderNumber": "#NS-294018",
+      "customerEmail": "beatrice@example.com",
+      "customerName": "Beatrice Wanjiru",
+      "status": "Processing",
+      "statusDetails": "Your order is being packed at our central warehouse. It typically ships within 24-48 hours.",
+      "purchaseDate": "08/13/2026",
+      "estimatedDelivery": "08/17/2026",
+      "carrier": "DHL Express",
+      "trackingNumber": "DHL-99401822",
+      "trackingUrl": "https://tracking.northstarretail.com/track?id=DHL-99401822",
+      "shippingAddress": "**** Kimathi St, Nairobi",
+      "items": [
+        {
+          "sku": "SKU-DRS-002",
+          "name": "Silk Linen Summer Dress",
+          "size": "M",
+          "quantity": 1,
+          "price": 89.95
+        },
+        {
+          "sku": "SKU-SH-003",
+          "name": "Urban Canvas Sneakers",
+          "size": "38",
+          "quantity": 1,
+          "price": 65.00
+        }
+      ]
+    },
+    {
+      "orderNumber": "#NS-381940",
+      "customerEmail": "charles@example.com",
+      "customerName": "Charles Kipchoge",
+      "status": "Shipped",
+      "statusDetails": "Your order has left our warehouse facility and is in transit with the carrier.",
+      "purchaseDate": "08/11/2026",
+      "estimatedDelivery": "08/15/2026",
+      "carrier": "Kenya Post Logistics",
+      "trackingNumber": "KPL-38194011",
+      "trackingUrl": "https://tracking.northstarretail.com/track?id=KPL-38194011",
+      "shippingAddress": "**** Haile Selassie Ave, Mombasa",
+      "items": [
+        {
+          "sku": "SKU-PNTS-004",
+          "name": "Flex-Fit Chino Trousers",
+          "size": "32",
+          "quantity": 2,
+          "price": 54.50
+        }
+      ]
+    },
+    {
+      "orderNumber": "#NS-492019",
+      "customerEmail": "diana@example.com",
+      "customerName": "Diana Prince",
+      "status": "On Hold",
+      "statusDetails": "We encountered a temporary customs/fulfillment delay. Our logistics team is resolving this, and tracking updates refresh every 24 hours.",
+      "purchaseDate": "08/08/2026",
+      "estimatedDelivery": "08/18/2026",
+      "carrier": "Speedaf Express",
+      "trackingNumber": "SPD-49201988",
+      "trackingUrl": "https://tracking.northstarretail.com/track?id=SPD-49201988",
+      "shippingAddress": "**** Kenyatta Ave, Nakuru",
+      "items": [
+        {
+          "sku": "SKU-BAG-005",
+          "name": "Waterproof Commuter Backpack",
+          "size": "One Size",
+          "quantity": 1,
+          "price": 110.00
+        }
+      ]
+    },
+    {
+      "orderNumber": "#NS-583920",
+      "customerEmail": "emmanuel@example.com",
+      "customerName": "Emmanuel Otieno",
+      "status": "Delivered",
+      "statusDetails": "Package was successfully handed to recipient at destination address.",
+      "purchaseDate": "07/20/2026",
+      "estimatedDelivery": "07/24/2026",
+      "carrier": "FedEx Express",
+      "trackingNumber": "FDX-58392000",
+      "trackingUrl": "https://tracking.northstarretail.com/track?id=FDX-58392000",
+      "shippingAddress": "**** Oginga Odinga St, Kisumu",
+      "items": [
+        {
+          "sku": "SKU-JKT-001",
+          "name": "All-Weather Transit Jacket",
+          "size": "XL",
+          "quantity": 1,
+          "price": 129.99
+        }
+      ]
+    }
+  ]
+}
