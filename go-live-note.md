@@ -71,3 +71,11 @@ Replace the static `rag.js` keyword matcher with a production-grade semantic Vec
 ```
 - **Automated Re-Indexing**: Configure CMS webhooks so that whenever Northstar updates policy pages, the vector store automatically updates embeddings.
 - **Strict Prompt Scoping**: Instruct the LLM to restrict answers *only* to context retrieved from the vector database.
+
+### 🇰🇪 3.4 Data Protection Compliance (Kenya Data Protection Act 2022)
+> [!WARNING]
+> Customer data processed in Kenya or covering East African customers must comply strictly with the Kenya Data Protection Act 2022 (KDPA) and global privacy standards (GDPR).
+
+- **Data Minimisation**: The widget API must return only the minimal attributes required to answer the question (e.g., masked address `**** Main St, Nairobi`, status, carrier name). Never return credit card numbers, passwords, or full billing addresses.
+- **Audit Logging**: Store immutable, encrypted audit logs of all bot lookups and escalations for compliance reviews.
+- **Consent Banner**: Ensure the chat widget explicitly notifies users about automated data processing before starting a session.
