@@ -41,6 +41,7 @@
 
 ### 7. Tool setup
 Repository: https://github.com/susan-awori/northstar-retail-support-mvp
+
 Shared doc for go-live note: [go-live-note.md](go-live-note.md)
 
 
