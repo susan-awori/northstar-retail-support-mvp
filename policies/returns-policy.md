@@ -18,3 +18,6 @@ Certain items cannot be returned due to hygiene and clearance rules:
 We offer two convenient ways to handle your return:
 1. **Store Credit Exchange (Free)**: Return your item for store credit or exchange for a different size/color with zero restocking fees. We cover standard return shipping!
 2. **Refund to Original Payment ($5.99 Fee)**: Receive a refund back to your original payment method. A standard $5.99 shipping and restocking fee will be deducted from your total refund amount
+
+## How to Initiate a Return
+Visit our online portal at `www.northstarretail.com/returns` and enter your Order Number (`#NS-XXXXXX`) and Email. Print the prepaid shipping label and drop your parcel at any authorized courier location. Returns process within 3–5 business days after warehouse arrival.
