@@ -10,3 +10,6 @@ Orders placed before 2:00 PM local time are processed and packed on the same bus
 
 ## Carrier Partners & Real-Time Tracking
 Orders are dispatched via FedEx Express, DHL Express, Kenya Post Logistics, or Speedaf Express depending on your region. Once your order leaves our fulfillment center, you will receive an automated email containing a 6-digit tracking link and carrier tracking ID
+
+## Delays & Hold Handling
+While we strive for prompt delivery, severe weather, customs inspections, or holiday peaks may cause unexpected delays. If your order status reads **On Hold** or **Delayed**, our logistics team is actively coordinating with the carrier. Order tracking statuses refresh automatically every 24 hours.
