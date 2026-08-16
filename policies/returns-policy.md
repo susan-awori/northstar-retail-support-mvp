@@ -7,3 +7,9 @@ To qualify for a return or exchange, items must meet the following criteria:
 - Returned within 30 days from the confirmed delivery date.
 - Items must be in original condition: unworn, unwashed, undamaged, and with all original tags intact.
 - Items must be returned in their original packaging
+
+## Non-Returnable & Final Sale Items
+Certain items cannot be returned due to hygiene and clearance rules:
+- Final Sale items (marked with Final Sale tag at checkout).
+- Intimate apparel, swimwear, and opened beauty products.
+- Customized or personalized items.
