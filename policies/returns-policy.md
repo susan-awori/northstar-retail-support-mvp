@@ -13,3 +13,8 @@ Certain items cannot be returned due to hygiene and clearance rules:
 - Final Sale items (marked with Final Sale tag at checkout).
 - Intimate apparel, swimwear, and opened beauty products.
 - Customized or personalized items.
+
+## Exchanges vs. Refunds & Processing Fees
+We offer two convenient ways to handle your return:
+1. **Store Credit Exchange (Free)**: Return your item for store credit or exchange for a different size/color with zero restocking fees. We cover standard return shipping!
+2. **Refund to Original Payment ($5.99 Fee)**: Receive a refund back to your original payment method. A standard $5.99 shipping and restocking fee will be deducted from your total refund amount
