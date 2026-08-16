@@ -9,6 +9,11 @@
 
 ---
 
+ ## 🔗 Live Demo
+**[View the live app →](https://susan-awori.github.io/northstar-retail-support-mvp/)**
+
+---
+
 ## 🎯 Mission & Context
 
 Root Cause Analysis (5 Whys) at Northstar Retail Co. revealed that support agents were drowning in repetitive inquiries because **no self-service deflection layer existed** between customers and basic system data. 
