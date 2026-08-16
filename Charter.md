@@ -1,4 +1,4 @@
-**Team:** Group 103 · **Client:** Northstar Retail Co. · **Sprint:** Northstar Sprint 
+**Team:** STAR'S MVP  ·  **Client:** Northstar Retail Co. ·  **Sprint:** Northstar Sprint ·  **Group:** 103
  
 ---
  
@@ -7,21 +7,21 @@
 ### 1. Roles
 | Name | Role | GitHub Username |
 |---|---|---|
-| Susan Awori | Group Lead / Git & Process Owner / Build | susan-awori|
-| Harith Parvez | Product/Content Owner |hp50021225 |
-| Taiwo Francis | Product Build Owner |Francis1104OI |
-| Fionna Sibora | QA / Go-live Note Owner |Fionna-NS|
+| Susan Awori | Group Lead / Logic | susan-awori|
+| Harith Parvez | Content / Documentation |hp50021225 |
+| Taiwo Francis | Frontend / logic |Francis1104OI |
+| Fionna Sibora | AI / RAG |Fionna-NS|
  
 *Lead's job: unblock people, own the board, enforce naming conventions, escalate per the rules below — not to do everyone's tasks.*
 
 ### 2. Communication rules
 - Primary channel: **WhatsApp Group** — checked daily.
-- Daily 50-min google meet live check-in: what I did yesterday, what I'm doing today, what's blocking me.
+- Daily 50-min google meet live check-in: what we did yesterday, what we're doing today, what's blocking us.
 - Response time expectation: within 4 hours during working hours.
 
 ### 3. Deadlines
-- Day 1 (AM): solo baseline diagnostic — individual, no collaboration.
-- Day 1 (PM): Charter + Board workshop complete by end of day.
+- Day 1: solo baseline diagnostic — individual, no collaboration.
+- Day 1: Charter + Board workshop complete by end of day.
 - Day 2–3: build phase, board updated same-day as work happens.
 - Day 4: mid-sprint audit checkpoint — everyone reviews the commit/board log together.
 - Day 5: package + submit; Peer Reliability Index submitted individually and confidentially.
@@ -37,7 +37,7 @@
 - Tasks over 4 hours are automatically split — the "black box" rule below is enforced at board-setup time, not after the fact.
 
 ### 6. Commit/edit convention
-<type>: <what changed> — <why it matters> 
+type: what changed — why it matters
 
 ### 7. Tool setup
 Repository: https://github.com/susan-awori/northstar-retail-support-mvp
