@@ -13,3 +13,6 @@ Orders are dispatched via FedEx Express, DHL Express, Kenya Post Logistics, or S
 
 ## Delays & Hold Handling
 While we strive for prompt delivery, severe weather, customs inspections, or holiday peaks may cause unexpected delays. If your order status reads **On Hold** or **Delayed**, our logistics team is actively coordinating with the carrier. Order tracking statuses refresh automatically every 24 hours.
+
+## International Shipping
+We currently ship to over 40 countries worldwide. Customs duties, taxes, and import tariffs are calculated at checkout where applicable. International deliveries typically take 7–12 business days depending on destination customs clearance.
